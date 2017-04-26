@@ -7,20 +7,22 @@ const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 
-const isSearched = (searchTerm) => (item) =>
-    !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+// const isSearched = (searchTerm) => (item) =>
+//     !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-const Search = ({ value, onChange, children }) =>
-  <form>
-    {children}
+const Search = ({ value, onChange, children, onSubmit }) =>
+  <form onSubmit={onSubmit}>
     <input type="text"
            value={value}
            onChange={onChange} />
+    <button type="submit">
+      {children}
+    </button>
   </form>
 
-const Table = ({ list, pattern, onDismiss }) =>
+const Table = ({ list, onDismiss }) =>
   <div className="table">
-    {list.filter(isSearched(pattern)).map(item =>
+    {list.map(item =>
       <div key={item.objectID} className="table-row">
         <span style={{ width: '40%' }}>
           <a href={item.url}>{item.title}</a>
@@ -64,6 +66,7 @@ class App extends Component {
     this.setSearchTopstories = this.setSearchTopstories.bind(this);
     this.fetchSearchTopstories = this.fetchSearchTopstories.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
   }
 
@@ -86,10 +89,18 @@ class App extends Component {
     this.setState({ searchTerm: event.target.value });
   }
 
+  onSearchSubmit(event) {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopstories(searchTerm);
+    event.preventDefault();
+  }
+
   onDismiss(id) {
     const isNotID = item => item.objectID !== id;
-    const updatedList = this.state.list.filter(isNotID);
-    this.setState({ list: updatedList });
+    const updatedHits = this.state.result.hits.filter(isNotID);
+    this.setState({
+      result: { ...this.state.result, hits: updatedHits }
+    });
   }
 
   render() {
@@ -101,12 +112,15 @@ class App extends Component {
       <div className="page">
         <div className="interactions">
           <Search value={searchTerm}
-                  onChange={this.onSearchChange}>
-            Search:
+                  onChange={this.onSearchChange}
+                  onSubmit={this.onSearchSubmit} >
+            Search
           </Search>
-          <Table list={result.hits}
-                 pattern={searchTerm}
-                 onDismiss={this.onDismiss} />
+          { result
+            ? <Table list={result.hits}
+                     onDismiss={this.onDismiss} />
+            : null
+          }
         </div>
       </div>
     );
