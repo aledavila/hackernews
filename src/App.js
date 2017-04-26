@@ -25,9 +25,10 @@ const isSearched = (searchTerm) => (item) =>
 
 class Search extends Component {
   render() {
-    const { value, onChange } = this.props;
+    const { value, onChange, children } = this.props;
     return (
       <form>
+        {children}
         <input type="text"
                value={value}
                onChange={onChange} />
@@ -50,14 +51,31 @@ class Table extends Component {
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
             <span>
-              <button onClick={() => onDismiss(item.objectID)}
-                      type="button">
+              <Button onClick={() => onDismiss(item.objectID)}>
                 Dismiss
-              </button>
+              </Button>
             </span>
           </div>
         )}
       </div>
+    )
+  }
+}
+
+class Button extends Component {
+  render() {
+    const {
+      onClick,
+      className = '',
+      children,
+    } = this.props
+
+    return (
+      <button onClick={onClick}
+              className={className}
+              type="button">
+        {children}
+      </button>
     )
   }
 }
@@ -92,7 +110,7 @@ class App extends Component {
       <div className="App">
         <Search value={searchTerm}
                 onChange={this.onSearchChange}>
-          Search
+          Search:
         </Search>
         <Table list={list}
                pattern={searchTerm}
