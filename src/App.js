@@ -21,24 +21,16 @@ const list = [
 ];
 
 const isSearched = (searchTerm) => (item) =>
-  !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
-function isSearched(searchTerm) {
-  return function(item) {
-    return !searchTerm ||
-
-    item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  }
-}
+    !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class Search extends Component {
   render() {
     const { value, onChange } = this.props;
-    return() (
+    return (
       <form>
         <input type="text"
                value={value}
-               onChange={onChange}
-         />
+               onChange={onChange} />
       </form>
     )
   }
@@ -46,7 +38,7 @@ class Search extends Component {
 
 class Table extends Component {
   render() {
-    const {list, pattern, onDismiss } = this.props;
+    const { list, pattern, onDismiss } = this.props;
     return (
       <div>
         { list.filter(isSearched(pattern)).map(item =>
@@ -58,14 +50,15 @@ class Table extends Component {
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
             <span>
-              <button onClick={() => this.onDismiss(item.objectID)} type="button">
+              <button onClick={() => onDismiss(item.objectID)}
+                      type="button">
                 Dismiss
               </button>
             </span>
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
@@ -88,17 +81,19 @@ class App extends Component {
   }
 
   onDismiss(id) {
-    const isNotId = item => item.objectId !== id;
-    const updatedList = this.state.list.filter(isNotId);
+    const isNotID = item => item.objectID !== id;
+    const updatedList = this.state.list.filter(isNotID);
     this.setState({ list: updatedList });
   }
 
   render() {
-    const { searchTerm, list } = this.state;
+    const { list, searchTerm } = this.state;
     return (
       <div className="App">
         <Search value={searchTerm}
-                onChange={this.onSearchChange} />
+                onChange={this.onSearchChange}>
+          Search
+        </Search>
         <Table list={list}
                pattern={searchTerm}
                onDismiss={this.onDismiss} />
