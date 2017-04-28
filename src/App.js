@@ -21,9 +21,6 @@ const Search = ({ value, onChange, children, onSubmit }) =>
     </button>
   </form>
 
-const Loading = () =>
-  <div>Loading ...</div>
-
 const Table = ({ list, onDismiss }) =>
   <div className="table">
     <div className="table-header">
@@ -72,6 +69,14 @@ const Button = ({ onClick, className = '', children }) =>
           type="button">
     {children}
   </button>
+
+const Loading = () =>
+  <div>Loading ...</div>
+
+const withLoading = (Component) => ({ isLoading, ...rest }) =>
+  isLoading ? <Loading /> : <Component { ...rest } />
+
+const ButtonWithLoading = withLoading(Button);
 
 class App extends Component {
 
@@ -192,13 +197,10 @@ class App extends Component {
         <Table list={list}
                 onDismiss={this.onDismiss} />
         <div className="interactions">
-          { isLoading
-            ? <Loading />
-            : <Button onClick={() =>
-                this.fetchSearchTopstories(searchKey, page + 1)}>
-                More
-              </Button>
-          }
+          <ButtonWithLoading isLoading={isLoading}
+                             onClick={() => this.fetchSearchTopstories(searchKey, page + 1)}>
+            More
+          </ButtonWithLoading>
         </div>
       </div>
     );
