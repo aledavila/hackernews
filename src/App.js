@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { sortBy } from 'lodash';
+import classNames from 'classnames';
 import './App.css';
 
 const DEFAULT_QUERY = 'react';
@@ -31,15 +32,14 @@ const Search = ({ value, onChange, children, onSubmit }) =>
   </form>
 
 const Sort = ({ sortKey, activeSortKey, onSort, children }) => {
-  const sortClass = ['button-inline'];
-
-  if (sortKey === activeSortKey) {
-    sortClass.push('button-active');
-  }
+  const sortClass = classNames(
+    'button-inline',
+    { 'button-active': sortKey === activeSortKey }
+  );
 
   return (
     <Button onClick={() => onSort(sortKey)}
-            className={sortClass.join(' ')}>
+            className={sortClass}>
       {children}
     </Button>
   );

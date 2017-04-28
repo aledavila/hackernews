@@ -28,7 +28,12 @@ exports[`App snapshots 1`] = `
             "width": "40%",
           }
         }>
-        Title
+        <button
+          className="button-inline"
+          onClick={[Function]}
+          type="button">
+          Title
+        </button>
       </span>
       <span
         style={
@@ -36,7 +41,12 @@ exports[`App snapshots 1`] = `
             "width": "30%",
           }
         }>
-        Author
+        <button
+          className="button-inline"
+          onClick={[Function]}
+          type="button">
+          Author
+        </button>
       </span>
       <span
         style={
@@ -44,7 +54,12 @@ exports[`App snapshots 1`] = `
             "width": "10%",
           }
         }>
-        Comments
+        <button
+          className="button-inline"
+          onClick={[Function]}
+          type="button">
+          Comments
+        </button>
       </span>
       <span
         style={
@@ -52,14 +67,21 @@ exports[`App snapshots 1`] = `
             "width": "10%",
           }
         }>
-        Points
+        <button
+          className="button-inline"
+          onClick={[Function]}
+          type="button">
+          Points
+        </button>
       </span>
       <span
         style={
           Object {
             "width": "10%",
           }
-        } />
+        }>
+        Archive
+      </span>
     </div>
   </div>
   <div
