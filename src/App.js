@@ -32,6 +32,28 @@ const Search = ({ value, onChange, children, onSubmit }) =>
     </button>
   </form>
 
+const updateSearchTopstoriesState = (hits, page) =>
+  (prevState) => {
+    const { searchKey, results } = prevState;
+
+    const oldHits = results && results[searchKey]
+      ? results[searchKey].hits
+      : [];
+
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    return {
+      results: {
+        ...results,
+        [searchKey]: { hits: updatedHits, page }
+      },
+      isLoading: false
+    };
+  }
+
 const Sort = ({ sortKey, activeSortKey, onSort, children }) => {
   const sortClass = classNames(
     'button-inline',
@@ -183,24 +205,8 @@ class App extends Component {
 
   setSearchTopstories(result) {
     const { hits, page } = result;
-    const { searchKey, results } = this.state;
 
-    const oldHits = results && results[searchKey]
-      ? results[searchKey].hits
-      : [];
-
-    const updatedHits = [
-      ...oldHits,
-      ...hits
-    ];
-
-    this.setState({
-      results: {
-        ...results,
-        [searchKey]: { hits: updatedHits, page }
-      },
-      isLoading: false
-    });
+    this.setState(updateSearchTopstoriesState(hits, page));
   }
 
   fetchSearchTopstories(searchTerm, page) {
