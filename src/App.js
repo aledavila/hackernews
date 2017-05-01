@@ -32,28 +32,6 @@ const Search = ({ value, onChange, children, onSubmit }) =>
     </button>
   </form>
 
-const updateSearchTopstoriesState = (hits, page) =>
-  (prevState) => {
-    const { searchKey, results } = prevState;
-
-    const oldHits = results && results[searchKey]
-      ? results[searchKey].hits
-      : [];
-
-    const updatedHits = [
-      ...oldHits,
-      ...hits
-    ];
-
-    return {
-      results: {
-        ...results,
-        [searchKey]: { hits: updatedHits, page }
-      },
-      isLoading: false
-    };
-  }
-
 const Sort = ({ sortKey, activeSortKey, onSort, children }) => {
   const sortClass = classNames(
     'button-inline',
@@ -170,6 +148,28 @@ const Button = ({ onClick, className = '', children }) =>
           type="button">
     {children}
   </button>
+
+const updateSearchTopstoriesState = (hits, page) =>
+  (prevState) => {
+    const { searchKey, results } = prevState;
+
+    const oldHits = results && results[searchKey]
+      ? results[searchKey].hits
+      : [];
+
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    return {
+      results: {
+        ...results,
+        [searchKey]: { hits: updatedHits, page }
+      },
+      isLoading: false
+    };
+  }
 
 const Loading = () =>
   <div>Loading ...</div>
